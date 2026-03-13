@@ -159,6 +159,24 @@ h1 {
   letter-spacing: -0.05em;
 }
 
+.service-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 14px;
+  flex-wrap: nowrap;
+  line-height: 1;
+}
+
+.service-subtitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  line-height: 1;
+}
+
 .service-card p {
   margin: 0;
   max-width: 34ch;
@@ -188,5 +206,14 @@ h1 {
   .service-card-head {
     margin-bottom: 40px;
   }
-}
 
+  .service-subtitle {
+    font-size: 0.95rem;
+    white-space: normal;
+  }
+
+  .service-title-row {
+    align-items: baseline;
+    flex-wrap: wrap;
+  }
+}

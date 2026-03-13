@@ -2,11 +2,18 @@
 	email {$ACME_EMAIL}
 }
 
-etlers.com, www.etlers.com {
+http://etlers.com, http://www.etlers.com, http://localhost, http://127.0.0.1 {
 	reverse_proxy {$PORTAL_UPSTREAM_HOST}:{$PORTAL_UPSTREAM_PORT}
 }
 
-ekis.etlers.com {
+https://etlers.com, https://www.etlers.com {
+	reverse_proxy {$PORTAL_UPSTREAM_HOST}:{$PORTAL_UPSTREAM_PORT}
+}
+
+http://ekis.etlers.com {
 	reverse_proxy {$EKIS_UPSTREAM_HOST}:{$EKIS_UPSTREAM_PORT}
 }
 
+https://ekis.etlers.com {
+	reverse_proxy {$EKIS_UPSTREAM_HOST}:{$EKIS_UPSTREAM_PORT}
+}

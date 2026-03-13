@@ -1,5 +1,6 @@
 services:
   portal:
+    image: ekis_portal:latest
     build:
       context: ./portal
     container_name: etlers-portal
