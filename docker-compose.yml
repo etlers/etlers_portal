@@ -1,0 +1,32 @@
+services:
+  portal:
+    build:
+      context: ./portal
+    container_name: etlers-portal
+    restart: unless-stopped
+
+  gateway:
+    image: caddy:2.8-alpine
+    container_name: etlers-gateway
+    restart: unless-stopped
+    depends_on:
+      - portal
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      ACME_EMAIL: ${ACME_EMAIL:-etlersadm@gmail.com}
+      PORTAL_UPSTREAM_HOST: ${PORTAL_UPSTREAM_HOST:-portal}
+      PORTAL_UPSTREAM_PORT: ${PORTAL_UPSTREAM_PORT:-80}
+      EKIS_UPSTREAM_HOST: ${EKIS_UPSTREAM_HOST:-host.docker.internal}
+      EKIS_UPSTREAM_PORT: ${EKIS_UPSTREAM_PORT:-8080}
+    volumes:
+      - ./gateway/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  caddy_data:
+  caddy_config:
