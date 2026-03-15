@@ -57,7 +57,7 @@ body::after {
 .page-shell {
   position: relative;
   z-index: 1;
-  width: min(1120px, calc(100% - 32px));
+  width: min(1280px, calc(100% - 40px));
   margin: 0 auto;
   padding: 56px 0 72px;
 }
@@ -76,10 +76,16 @@ body::after {
 
 h1 {
   margin: 0;
-  max-width: 9ch;
-  font-size: clamp(3rem, 9vw, 6.4rem);
+  max-width: 16ch;
+  font-size: clamp(3rem, 8vw, 6.4rem);
   line-height: 0.92;
   letter-spacing: -0.06em;
+}
+
+h1 br {
+  display: block;
+  content: "";
+  margin-top: 0.12em;
 }
 
 .hero-copy {
@@ -97,8 +103,8 @@ h1 {
 }
 
 .service-card {
-  min-height: 280px;
-  padding: 28px;
+  min-height: 320px;
+  padding: 32px;
   border: 1px solid var(--line);
   border-radius: 28px;
   box-shadow: var(--shadow);
