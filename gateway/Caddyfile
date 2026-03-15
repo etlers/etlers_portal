@@ -17,3 +17,11 @@ http://ekis.etlers.com {
 https://ekis.etlers.com {
 	reverse_proxy {$EKIS_UPSTREAM_HOST}:{$EKIS_UPSTREAM_PORT}
 }
+
+http://forcast.etlers.com {
+	reverse_proxy {$FORECAST_UPSTREAM_HOST}:{$FORECAST_UPSTREAM_PORT}
+}
+
+https://forcast.etlers.com {
+	reverse_proxy {$FORECAST_UPSTREAM_HOST}:{$FORECAST_UPSTREAM_PORT}
+}
