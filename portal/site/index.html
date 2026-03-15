@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260314a" />
+    <link rel="stylesheet" href="./styles.css?v=20260315b" />
   </head>
   <body>
     <div class="page-shell">
@@ -56,6 +56,176 @@
           </p>
         </a>
       </main>
+
+      <section class="contact-panel" aria-label="관리자 문의">
+        <div class="contact-copy">
+          <p class="contact-eyebrow">ADMIN CONTACT</p>
+          <h2>관리자에게 문의</h2>
+          <p>
+            서비스 이용 중 궁금한 점이나 요청 사항이 있으면 이메일 또는 슬랙
+            DM으로 관리자에게 바로 문의할 수 있습니다.
+          </p>
+        </div>
+        <div class="contact-actions">
+          <a
+            class="contact-button"
+            href="mailto:etlersadm@gmail.com?subject=%5BETLERS%20Portal%20%EB%AC%B8%EC%9D%98%5D&body=%EC%9D%B4%EB%A6%84%3A%0A%EC%97%B0%EB%9D%BD%EC%B2%98%3A%0A%EC%9D%B4%EC%9A%A9%20%EC%84%9C%EB%B9%84%EC%8A%A4%3A%0A%EB%AC%B8%EC%9D%98%20%EB%82%B4%EC%9A%A9%3A%0A"
+          >
+            이메일로 문의
+          </a>
+          <button class="contact-button contact-button-secondary" type="button" id="open-slack-modal">
+            슬랙으로 문의
+          </button>
+        </div>
+      </section>
     </div>
+
+    <div class="modal-backdrop hidden" id="slack-modal">
+      <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="slack-modal-title">
+        <div class="modal-head">
+          <div>
+            <p class="contact-eyebrow">SLACK DM</p>
+            <h2 id="slack-modal-title">슬랙으로 문의</h2>
+          </div>
+          <button class="modal-close" type="button" id="close-slack-modal" aria-label="문의 창 닫기">
+            ×
+          </button>
+        </div>
+
+        <form id="slack-contact-form" class="modal-form">
+          <label class="modal-field">
+            <span>이름</span>
+            <input type="text" name="name" placeholder="이름을 입력하세요" required />
+          </label>
+
+          <label class="modal-field">
+            <span>연락처</span>
+            <input type="text" name="contact" placeholder="이메일 또는 전화번호" required />
+          </label>
+
+          <label class="modal-field">
+            <span>이용 서비스</span>
+            <select name="service">
+              <option value="ETLERS Portal">ETLERS Portal</option>
+              <option value="EKIS">EKIS</option>
+              <option value="Forcast">Forcast</option>
+            </select>
+          </label>
+
+          <label class="modal-field">
+            <span>문의 내용</span>
+            <textarea
+              name="message"
+              rows="6"
+              placeholder="문의하실 내용을 입력해주세요."
+              required
+            ></textarea>
+          </label>
+
+          <p class="modal-status hidden" id="slack-status"></p>
+
+          <div class="modal-actions">
+            <button class="contact-button contact-button-secondary" type="button" id="cancel-slack-modal">
+              취소
+            </button>
+            <button class="contact-button" type="submit" id="submit-slack-modal">
+              슬랙 DM 보내기
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      const slackModal = document.getElementById("slack-modal");
+      const openSlackModalButton = document.getElementById("open-slack-modal");
+      const closeSlackModalButton = document.getElementById("close-slack-modal");
+      const cancelSlackModalButton = document.getElementById("cancel-slack-modal");
+      const slackContactForm = document.getElementById("slack-contact-form");
+      const slackStatus = document.getElementById("slack-status");
+      const submitSlackModalButton = document.getElementById("submit-slack-modal");
+
+      function setSlackModalOpen(isOpen) {
+        slackModal.classList.toggle("hidden", !isOpen);
+        document.body.classList.toggle("modal-open", isOpen);
+
+        if (isOpen) {
+          const firstInput = slackContactForm.querySelector("input[name='name']");
+          if (firstInput) firstInput.focus();
+        }
+      }
+
+      function setSlackStatus(message, isError) {
+        slackStatus.textContent = message;
+        slackStatus.classList.remove("hidden", "is-error", "is-success");
+        slackStatus.classList.add(isError ? "is-error" : "is-success");
+      }
+
+      function clearSlackStatus() {
+        slackStatus.textContent = "";
+        slackStatus.classList.add("hidden");
+        slackStatus.classList.remove("is-error", "is-success");
+      }
+
+      openSlackModalButton.addEventListener("click", () => {
+        clearSlackStatus();
+        setSlackModalOpen(true);
+      });
+
+      [closeSlackModalButton, cancelSlackModalButton].forEach((button) => {
+        button.addEventListener("click", () => setSlackModalOpen(false));
+      });
+
+      slackModal.addEventListener("click", (event) => {
+        if (event.target === slackModal) {
+          setSlackModalOpen(false);
+        }
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && !slackModal.classList.contains("hidden")) {
+          setSlackModalOpen(false);
+        }
+      });
+
+      slackContactForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        clearSlackStatus();
+
+        const formData = new FormData(slackContactForm);
+        const payload = {
+          name: String(formData.get("name") || "").trim(),
+          contact: String(formData.get("contact") || "").trim(),
+          service: String(formData.get("service") || "").trim(),
+          message: String(formData.get("message") || "").trim(),
+        };
+
+        submitSlackModalButton.disabled = true;
+        submitSlackModalButton.textContent = "전송 중...";
+
+        try {
+          const response = await fetch("/api/contact/slack", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          });
+
+          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(data.detail || "슬랙 문의 전송에 실패했습니다.");
+          }
+
+          setSlackStatus(data.message || "슬랙 문의가 전송되었습니다.", false);
+          slackContactForm.reset();
+        } catch (error) {
+          setSlackStatus(error.message || "슬랙 문의 전송 중 오류가 발생했습니다.", true);
+        } finally {
+          submitSlackModalButton.disabled = false;
+          submitSlackModalButton.textContent = "슬랙 DM 보내기";
+        }
+      });
+    </script>
   </body>
 </html>

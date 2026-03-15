@@ -3,10 +3,16 @@
 }
 
 http://etlers.com, http://www.etlers.com, http://localhost, http://127.0.0.1 {
+	@contact path /api/contact /api/contact/*
+	reverse_proxy @contact contact-api:8001
+
 	reverse_proxy {$PORTAL_UPSTREAM_HOST}:{$PORTAL_UPSTREAM_PORT}
 }
 
 https://etlers.com, https://www.etlers.com {
+	@contact path /api/contact /api/contact/*
+	reverse_proxy @contact contact-api:8001
+
 	reverse_proxy {$PORTAL_UPSTREAM_HOST}:{$PORTAL_UPSTREAM_PORT}
 }
 

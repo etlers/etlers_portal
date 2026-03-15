@@ -6,12 +6,25 @@ services:
     container_name: etlers-portal
     restart: unless-stopped
 
+  contact-api:
+    build:
+      context: ./contact_api
+    image: etlers-contact-api:latest
+    container_name: etlers-contact-api
+    restart: unless-stopped
+    environment:
+      PORT: 8001
+      SLACK_INFO_PATH: /app/env/slack_info.json
+    volumes:
+      - ./env/slack_info.json:/app/env/slack_info.json:ro
+
   gateway:
     image: caddy:2.8-alpine
     container_name: etlers-gateway
     restart: unless-stopped
     depends_on:
       - portal
+      - contact-api
     ports:
       - "80:80"
       - "443:443"
