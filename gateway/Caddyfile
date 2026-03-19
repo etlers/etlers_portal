@@ -24,10 +24,18 @@ https://ekis.etlers.com {
 	reverse_proxy {$EKIS_UPSTREAM_HOST}:{$EKIS_UPSTREAM_PORT}
 }
 
-http://forcast.etlers.com {
+http://forecast.etlers.com {
 	reverse_proxy {$FORECAST_UPSTREAM_HOST}:{$FORECAST_UPSTREAM_PORT}
 }
 
-https://forcast.etlers.com {
+https://forecast.etlers.com {
 	reverse_proxy {$FORECAST_UPSTREAM_HOST}:{$FORECAST_UPSTREAM_PORT}
+}
+
+http://agentdeal.etlers.com {
+	reverse_proxy {$AGENT_DEAL_UPSTREAM_HOST}:{$AGENT_DEAL_UPSTREAM_PORT}
+}
+
+https://agentdeal.etlers.com {
+	reverse_proxy {$AGENT_DEAL_UPSTREAM_HOST}:{$AGENT_DEAL_UPSTREAM_PORT}
 }
