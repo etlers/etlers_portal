@@ -1,6 +1,6 @@
 services:
   portal:
-    image: ekis_portal:latest
+    image: etlers_portal:latest
     build:
       context: ./portal
     container_name: etlers-portal
@@ -38,6 +38,8 @@ services:
       FORECAST_UPSTREAM_PORT: ${FORECAST_UPSTREAM_PORT:-6104}
       AGENT_DEAL_UPSTREAM_HOST: ${AGENT_DEAL_UPSTREAM_HOST:-host.docker.internal}
       AGENT_DEAL_UPSTREAM_PORT: ${AGENT_DEAL_UPSTREAM_PORT:-1972}
+      EKISP_UPSTREAM_HOST: ${EKISP_UPSTREAM_HOST:-host.docker.internal}
+      EKISP_UPSTREAM_PORT: ${EKISP_UPSTREAM_PORT:-2003}
     volumes:
       - ./gateway/Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data

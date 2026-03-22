@@ -39,3 +39,11 @@ http://agentdeal.etlers.com {
 https://agentdeal.etlers.com {
 	reverse_proxy {$AGENT_DEAL_UPSTREAM_HOST}:{$AGENT_DEAL_UPSTREAM_PORT}
 }
+
+http://ekisp.etlers.com {
+	reverse_proxy {$EKISP_UPSTREAM_HOST}:{$EKISP_UPSTREAM_PORT}
+}
+
+https://ekisp.etlers.com {
+	reverse_proxy {$EKISP_UPSTREAM_HOST}:{$EKISP_UPSTREAM_PORT}
+}
