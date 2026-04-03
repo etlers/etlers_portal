@@ -47,3 +47,11 @@ http://ekisp.etlers.com {
 https://ekisp.etlers.com {
 	reverse_proxy {$EKISP_UPSTREAM_HOST}:{$EKISP_UPSTREAM_PORT}
 }
+
+http://airflow.etlers.com {
+	reverse_proxy {$AIRFLOW_UPSTREAM_HOST}:{$AIRFLOW_UPSTREAM_PORT}
+}
+
+https://airflow.etlers.com {
+	reverse_proxy {$AIRFLOW_UPSTREAM_HOST}:{$AIRFLOW_UPSTREAM_PORT}
+}

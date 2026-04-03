@@ -40,6 +40,8 @@ services:
       AGENT_DEAL_UPSTREAM_PORT: ${AGENT_DEAL_UPSTREAM_PORT:-1972}
       EKISP_UPSTREAM_HOST: ${EKISP_UPSTREAM_HOST:-host.docker.internal}
       EKISP_UPSTREAM_PORT: ${EKISP_UPSTREAM_PORT:-2003}
+      AIRFLOW_UPSTREAM_HOST: ${AIRFLOW_UPSTREAM_HOST:-host.docker.internal}
+      AIRFLOW_UPSTREAM_PORT: ${AIRFLOW_UPSTREAM_PORT:-2002}
     volumes:
       - ./gateway/Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
