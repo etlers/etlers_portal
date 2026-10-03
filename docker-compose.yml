@@ -42,8 +42,24 @@ services:
       EKISP_UPSTREAM_PORT: ${EKISP_UPSTREAM_PORT:-2003}
       AIRFLOW_UPSTREAM_HOST: ${AIRFLOW_UPSTREAM_HOST:-host.docker.internal}
       AIRFLOW_UPSTREAM_PORT: ${AIRFLOW_UPSTREAM_PORT:-2002}
+      # Reach show-colima over the shared Docker network (avoids brittle host port forwards).
+      COLIMA_UPSTREAM_HOST: ${COLIMA_UPSTREAM_HOST:-show-colima}
+      COLIMA_UPSTREAM_PORT: ${COLIMA_UPSTREAM_PORT:-9998}
+      AI_PORTAL_UPSTREAM_HOST: ${AI_PORTAL_UPSTREAM_HOST:-host.docker.internal}
+      AI_PORTAL_UPSTREAM_PORT: ${AI_PORTAL_UPSTREAM_PORT:-5173}
+      MEDICAL_ERD_UPSTREAM_HOST: ${MEDICAL_ERD_UPSTREAM_HOST:-host.docker.internal}
+      MEDICAL_ERD_UPSTREAM_PORT: ${MEDICAL_ERD_UPSTREAM_PORT:-8765}
+      MEDICAL_SQL_UPSTREAM_HOST: ${MEDICAL_SQL_UPSTREAM_HOST:-host.docker.internal}
+      MEDICAL_SQL_UPSTREAM_PORT: ${MEDICAL_SQL_UPSTREAM_PORT:-8766}
+      AI_DW_UPSTREAM_HOST: ${AI_DW_UPSTREAM_HOST:-host.docker.internal}
+      AI_DW_UPSTREAM_PORT: ${AI_DW_UPSTREAM_PORT:-1101}
+      UNIFIED_EKIS_UPSTREAM_HOST: ${UNIFIED_EKIS_UPSTREAM_HOST:-host.docker.internal}
+      UNIFIED_EKIS_UPSTREAM_PORT: ${UNIFIED_EKIS_UPSTREAM_PORT:-9246}
+      UNIFIED_EKIS_API_HOST: ${UNIFIED_EKIS_API_HOST:-host.docker.internal}
+      UNIFIED_EKIS_API_PORT: ${UNIFIED_EKIS_API_PORT:-9247}
     volumes:
       - ./gateway/Caddyfile:/etc/caddy/Caddyfile:ro
+      - /Users/etlers/workspace/db_hospital:/srv/db_hospital:ro
       - caddy_data:/data
       - caddy_config:/config
     extra_hosts:

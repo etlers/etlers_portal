@@ -131,6 +131,31 @@ h1 br {
 
 .service-card-muted {
   background: rgba(255, 255, 255, 0.5);
+  cursor: default;
+  pointer-events: none;
+  opacity: 0.78;
+}
+
+.service-card-primary.service-card-muted:hover {
+  transform: none;
+  border-color: var(--line);
+  box-shadow: var(--shadow);
+}
+
+.service-card-locked {
+  width: 100%;
+  margin: 0;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0.9;
+}
+
+.service-card-primary.service-card-locked:hover {
+  transform: translateY(-4px);
+  border-color: rgba(178, 76, 46, 0.34);
+  box-shadow: 0 28px 68px rgba(51, 39, 24, 0.2);
 }
 
 .service-card-head {

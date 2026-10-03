@@ -6,12 +6,40 @@ http://etlers.com, http://www.etlers.com, http://localhost, http://127.0.0.1 {
 	@contact path /api/contact /api/contact/*
 	reverse_proxy @contact contact-api:8001
 
+	@medical_sql path /api/sql/run
+	reverse_proxy @medical_sql {$MEDICAL_SQL_UPSTREAM_HOST}:{$MEDICAL_SQL_UPSTREAM_PORT}
+
+	@ai_dw_legacy path_regexp ai_dw ^/ai-dw(/.*)?$
+	redir @ai_dw_legacy https://aidw.etlers.com{re.ai_dw.1} 308
+
+	redir /erd_preview.html /frontend/erd_preview.html 308
+
+	@medical_erd path /frontend/erd_preview.html /docs/* /README.md
+	handle @medical_erd {
+		root * /srv/db_hospital
+		file_server
+	}
+
 	reverse_proxy {$PORTAL_UPSTREAM_HOST}:{$PORTAL_UPSTREAM_PORT}
 }
 
 https://etlers.com, https://www.etlers.com {
 	@contact path /api/contact /api/contact/*
 	reverse_proxy @contact contact-api:8001
+
+	@medical_sql path /api/sql/run
+	reverse_proxy @medical_sql {$MEDICAL_SQL_UPSTREAM_HOST}:{$MEDICAL_SQL_UPSTREAM_PORT}
+
+	@ai_dw_legacy path_regexp ai_dw ^/ai-dw(/.*)?$
+	redir @ai_dw_legacy https://aidw.etlers.com{re.ai_dw.1} 308
+
+	redir /erd_preview.html /frontend/erd_preview.html 308
+
+	@medical_erd path /frontend/erd_preview.html /docs/* /README.md
+	handle @medical_erd {
+		root * /srv/db_hospital
+		file_server
+	}
 
 	reverse_proxy {$PORTAL_UPSTREAM_HOST}:{$PORTAL_UPSTREAM_PORT}
 }
@@ -54,4 +82,56 @@ http://airflow.etlers.com {
 
 https://airflow.etlers.com {
 	reverse_proxy {$AIRFLOW_UPSTREAM_HOST}:{$AIRFLOW_UPSTREAM_PORT}
+}
+
+http://colima.etlers.com {
+	reverse_proxy {$COLIMA_UPSTREAM_HOST}:{$COLIMA_UPSTREAM_PORT}
+}
+
+https://colima.etlers.com {
+	reverse_proxy {$COLIMA_UPSTREAM_HOST}:{$COLIMA_UPSTREAM_PORT}
+}
+
+http://aiportal.etlers.com {
+	handle /api* {
+		reverse_proxy host.docker.internal:5172
+	}
+
+	handle /chat/completions* {
+		reverse_proxy host.docker.internal:5172
+	}
+
+	handle {
+		reverse_proxy {$AI_PORTAL_UPSTREAM_HOST}:{$AI_PORTAL_UPSTREAM_PORT}
+	}
+}
+
+https://aiportal.etlers.com {
+	handle /api* {
+		reverse_proxy host.docker.internal:5172
+	}
+
+	handle /chat/completions* {
+		reverse_proxy host.docker.internal:5172
+	}
+
+	handle {
+		reverse_proxy {$AI_PORTAL_UPSTREAM_HOST}:{$AI_PORTAL_UPSTREAM_PORT}
+	}
+}
+
+http://aidw.etlers.com {
+	reverse_proxy {$AI_DW_UPSTREAM_HOST}:{$AI_DW_UPSTREAM_PORT}
+}
+
+https://aidw.etlers.com {
+	reverse_proxy {$AI_DW_UPSTREAM_HOST}:{$AI_DW_UPSTREAM_PORT}
+}
+
+http://unified.etlers.com {
+	reverse_proxy {$UNIFIED_EKIS_UPSTREAM_HOST}:{$UNIFIED_EKIS_UPSTREAM_PORT}
+}
+
+https://unified.etlers.com {
+	reverse_proxy {$UNIFIED_EKIS_UPSTREAM_HOST}:{$UNIFIED_EKIS_UPSTREAM_PORT}
 }
